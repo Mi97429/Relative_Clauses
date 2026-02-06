@@ -264,7 +264,7 @@
         <div class="header-content">
             <div style="display:flex; align-items:center; gap:15px;">
                 <div id="btn-home" class="btn btn-outline hidden" onclick="app.showDashboard()" role="button" tabindex="0">⬅ Menu</div>
-                <span class="app-brand" onclick="app.showDashboard()">GrammarPro</span>
+                <span class="app-brand" onclick="app.showDashboard()">Relative clauses</span>
             </div>
             
             <div class="header-actions">
@@ -290,79 +290,118 @@
                 <h2 style="color:var(--text-main); margin:0;">Relative Clauses: Rules 🧠</h2>
                 <div class="modal-close" onclick="app.toggleRules()" role="button">✖</div>
             </div>
-            <div class="modal-content">
-                
-                <div class="help-section">
-                    <div class="help-title">1. Which word do I use?</div>
-                    <table class="help-table">
-                        <thead>
-                            <tr>
-                                <th>Refers to</th>
-                                <th>Subject</th>
-                                <th>Object</th>
-                                <th>Possession</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td><strong>People</strong> 🧑‍🦱</td>
-                                <td><span class="help-badge badge-person">WHO</span><br><span class="ex-text">"The man <strong>who</strong> called."</span></td>
-                                <td><span class="help-badge badge-person">WHO / WHOM</span><br><span class="ex-text">"The girl <strong>whom</strong> I saw."</span></td>
-                                <td><span class="help-badge badge-poss">WHOSE</span><br><span class="ex-text">"The boy <strong>whose</strong> bike..."</span></td>
-                            </tr>
-                            <tr>
-                                <td><strong>Things</strong> 📦</td>
-                                <td><span class="help-badge badge-thing">WHICH</span><br><span class="ex-text">"The car <strong>which</strong> is red."</span></td>
-                                <td><span class="help-badge badge-thing">WHICH</span><br><span class="ex-text">"The book <strong>which</strong> I read."</span></td>
-                                <td><span class="help-badge badge-poss">WHOSE</span><br><span class="ex-text">"A house <strong>whose</strong> roof..."</span></td>
-                            </tr>
-                            <tr>
-                                <td><strong>Place / Time</strong> 🌍</td>
-                                <td colspan="3">
-                                    <strong>WHERE</strong> (Place)<br><span class="ex-text">"The city <strong>where</strong> I live."</span><br>
-                                    <strong>WHEN</strong> (Time)<br>
-                                    <strong>WHY</strong> (Reason)
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
+            <div class="modal-content" style="background: #f8fafc; padding: 25px;">
 
-                <div class="help-section">
-                    <div class="help-title">2. Comma or not?</div>
-                    <div class="compare-grid">
-                        <div class="compare-box compare-def">
-                            <span class="compare-title" style="color:#15803d;">DEFINING (No commas)</span>
-                            <p>Information is <strong>necessary</strong> to identify who/what we are talking about.</p>
-                            <hr style="border:0; border-top:1px solid #bbf7d0; margin:8px 0;">
-                            <p style="font-style:italic;">"The man <strong>who lives next door</strong> is nice."</p>
-                            <p><small>(Without the clause, we don't know which man.)</small></p>
-                        </div>
-                        <div class="compare-box compare-non">
-                            <span class="compare-title" style="color:#c2410c;">NON-DEFINING (Commas)</span>
-                            <p>Information is <strong>extra</strong>. We already know who it is (e.g. a name).</p>
-                            <hr style="border:0; border-top:1px solid #fed7aa; margin:8px 0;">
-                            <p style="font-style:italic;">"My father, <strong>who is 50</strong>, is a doctor."</p>
-                            <p><small>(I only have one father, age is extra info.)</small></p>
-                        </div>
-                    </div>
-                </div>
+    <div style="text-align:center; margin-bottom:20px;">
+        <h3 style="color:var(--primary); font-size:1.4rem; margin-bottom:5px;">Stap 1: Is het een Mens of een Ding? 🤷</h3>
+        <p style="color:var(--text-muted); font-size:0.95rem;">Kijk naar het woord vóór de invulplek.</p>
+    </div>
+    
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 30px;">
+        
+        <div style="background: white; padding: 20px; border-radius: 16px; border: 2px solid var(--primary-light); box-shadow: 0 4px 6px rgba(0,0,0,0.02);">
+            <h3 style="color: var(--primary); text-align: center; margin-bottom: 15px; font-size: 1.3rem;">🧑 MENS</h3>
+            
+            <div style="background: var(--primary-light); padding: 12px; margin-bottom: 15px; border-radius: 12px;">
+                <div style="font-size: 0.85rem; color: var(--primary-dark); font-weight:600;">Onderwerp (Die iets doet)</div>
+                <div style="font-weight: 900; font-size: 1.4rem; color: var(--primary); margin: 5px 0;">WHO</div>
+                <ul style="margin:0; padding-left:20px; font-size:0.85rem; color:var(--text-main); line-height:1.4;">
+                    <li>The man <b>who</b> called is nice.</li>
+                    <li>Students <b>who</b> study hard.</li>
+                </ul>
+            </div>
 
-                <div class="help-section">
-                    <div class="help-title">3. Golden Rules 🏆</div>
-                    <ul style="padding-left:20px; line-height:1.6;">
-                        <li>🚫 Never use <strong>THAT</strong> after a comma.</li>
-                        <li>🚫 Never use <strong>THAT</strong> after a preposition (in, at, with...).</li>
-                        <li>👉 After a preposition, use <strong>WHOM</strong> (people) or <strong>WHICH</strong> (things).<br><em>Ex: "The man <u>with whom</u> I work."</em></li>
-                        <li>👻 If the word (who/which/that) is <strong>NOT the subject</strong>, you can omit it (in Defining sentences).<br><em>Ex: "The book (which) I read."</em></li>
-                    </ul>
-                </div>
+            <div style="background: #fff; border: 2px dashed #cbd5e1; padding: 12px; margin-bottom: 15px; border-radius: 12px;">
+                <div style="font-size: 0.85rem; color: #64748b; font-weight:600;">Na voorzetsel (to, with...)</div>
+                <div style="font-weight: 800; font-size: 1.2rem; color: var(--text-main); margin: 5px 0;">WHOM</div>
+                <ul style="margin:0; padding-left:20px; font-size:0.85rem; color:#64748b; line-height:1.4;">
+                    <li>The girl <u>with</u> <b>whom</b> I danced.</li>
+                    <li>The friend <u>to</u> <b>whom</b> I spoke.</li>
+                </ul>
+            </div>
 
+            <div style="background: #fffbeb; padding: 12px; border-radius: 12px; border-left: 5px solid var(--gold);">
+                <div style="font-size: 0.85rem; color: #b45309; font-weight:bold;">Van wie is het? (Bezit)</div>
+                <div style="font-weight: 900; font-size: 1.3rem; color: #d97706; margin: 5px 0;">WHOSE</div>
+                <ul style="margin:0; padding-left:20px; font-size:0.85rem; color:#92400e; line-height:1.4;">
+                    <li>The boy <b>whose</b> bike broke.</li>
+                    <li>A mom <b>whose</b> baby is crying.</li>
+                </ul>
+            </div>
+        </div>
+
+        <div style="background: white; padding: 20px; border-radius: 16px; border: 2px solid #ecfeff; box-shadow: 0 4px 6px rgba(0,0,0,0.02);">
+            <h3 style="color: var(--accent); text-align: center; margin-bottom: 15px; font-size: 1.3rem;">📦 DING / DIER</h3>
+            
+            <div style="background: #ecfeff; padding: 12px; margin-bottom: 15px; border-radius: 12px;">
+                <div style="font-size: 0.85rem; color: #155e75; font-weight:600;">Het ding of dier</div>
+                <div style="font-weight: 900; font-size: 1.4rem; color: var(--accent); margin: 5px 0;">WHICH</div>
+                <ul style="margin:0; padding-left:20px; font-size:0.85rem; color:var(--text-main); line-height:1.4;">
+                    <li>The book <b>which</b> is red.</li>
+                    <li>The dog <b>which</b> bit me.</li>
+                    <li>The key <u>with</u> <b>which</b> I opened it.</li>
+                </ul>
+            </div>
+
+            <div style="background: white; border: 2px solid #e2e8f0; padding: 12px; margin-bottom: 15px; border-radius: 12px;">
+                <div style="font-size: 0.85rem; color: #64748b; font-weight:600;">Plaats / Tijd</div>
+                <div style="font-weight: 800; font-size: 1.2rem; color: var(--text-main); margin: 5px 0;">WHERE</div>
+                <ul style="margin:0; padding-left:20px; font-size:0.85rem; color:#64748b; line-height:1.4;">
+                    <li>The city <b>where</b> I live.</li>
+                    <li>The school <b>where</b> we learn.</li>
+                </ul>
+            </div>
+
+            <div style="background: #fffbeb; padding: 12px; border-radius: 12px; border-left: 5px solid var(--gold);">
+                <div style="font-size: 0.85rem; color: #b45309; font-weight:bold;">Van wie/wat? (Bezit)</div>
+                <div style="font-weight: 900; font-size: 1.3rem; color: #d97706; margin: 5px 0;">WHOSE</div>
+                <ul style="margin:0; padding-left:20px; font-size:0.85rem; color:#92400e; line-height:1.4;">
+                    <li>A house <b>whose</b> roof is old.</li>
+                    <li>A car <b>whose</b> tires are flat.</li>
+                </ul>
             </div>
         </div>
     </div>
 
-    <div id="cert-input-modal" class="modal-overlay">
+    <div style="text-align:center; margin-bottom:20px;">
+        <h3 style="color:var(--primary); font-size:1.4rem; margin-bottom:5px;">Stap 2: Wel of Geen Komma? 🤔</h3>
+        <p style="color:var(--text-muted); font-size:0.95rem;">Lees de zin ZONDER het stukje tussen haakjes.</p>
+    </div>
+
+    <div class="compare-grid" style="margin-bottom:25px;">
+        <div style="background: var(--success-bg); border: 2px solid var(--success-border); padding: 20px; border-radius: 16px;">
+            <span style="color:var(--success-border); font-weight:800; font-size: 1.1rem; display:block; margin-bottom:10px;">🟢 NOODZAKELIJK (Geen komma)</span>
+            <p style="font-size: 0.9rem; margin-bottom: 10px; color: #14532d;">Zonder dit stukje weet je NIET over wie het gaat.</p>
+            
+            <div style="background:white; padding:10px; border-radius:8px; margin-bottom:10px;">
+                <p style="font-size:0.85rem; margin-bottom:5px;"><i>"The man <b>who called</b> is Tom."</i></p>
+                <p style="font-size:0.8rem; color:#64748b;">(Welke man? Die belde! Zonder dat weet je niks.)</p>
+            </div>
+            
+            <div style="background: rgba(255,255,255,0.6); padding: 8px; border-radius: 8px; font-size:0.9rem;">
+                <span style="color:var(--success); font-weight:bold;">✓</span> Mag je <b>THAT</b> gebruiken? <b style="color:var(--success);">JA</b>
+            </div>
+        </div>
+
+        <div style="background: var(--error-bg); border: 2px solid var(--error-border); padding: 20px; border-radius: 16px;">
+            <span style="color:var(--error-border); font-weight:800; font-size: 1.1rem; display:block; margin-bottom:10px;">🛑 EXTRA INFO (Wel komma's)</span>
+            <p style="font-size: 0.9rem; margin-bottom: 10px; color: #7f1d1d;">Je weet al wie het is (bijv. een naam of uniek ding).</p>
+            
+            <div style="background:white; padding:10px; border-radius:8px; margin-bottom:10px;">
+                <p style="font-size:0.85rem; margin-bottom:5px;"><i>"Tom, <b>who called</b>, is nice."</i></p>
+                <p style="font-size:0.8rem; color:#64748b;">(Je weet al dat het Tom is. 'Who called' is extra.)</p>
+            </div>
+
+            <div style="background: rgba(255,255,255,0.6); padding: 8px; border-radius: 8px; font-size:0.9rem;">
+                <span style="color:var(--error); font-weight:bold;">✖</span> Mag je <b>THAT</b> gebruiken? <b style="color:var(--error);">NEE!</b>
+            </div>
+        </div>
+    </div>
+    
+<div style="text-align:center;">
+            <button class="btn btn-primary" onclick="app.toggleRules()" style="max-width:250px; margin:0 auto; border-radius:30px; font-size: 1.1rem;">Ik snap het! 👍</button>
+        </div>
+    </div> </div> </div> <div id="cert-input-modal" class="modal-overlay">
         <div class="modal-box" style="text-align:center;">
             <div style="padding:40px;">
                 <div class="modal-close" style="position:absolute; top:20px; right:20px;" onclick="document.getElementById('cert-input-modal').style.display='none'" role="button">✖</div>
@@ -497,7 +536,7 @@
                 const footerResetBtn = document.getElementById('footer-reset-btn');
                 if(footerResetBtn) footerResetBtn.classList.remove('hidden');
                 
-                let html = `<div class="dashboard-header fade-in"><h1 class="main-title">Relative Clauses</h1></div>`;
+                let html = `<div class="dashboard-header fade-in"></div>`;
                 
                 html += `<div class="dashboard-grid fade-in">`;
                 
@@ -532,10 +571,26 @@
                 document.getElementById('app').innerHTML = html;
             },
 
-            openCertificateInput() {
-                this.stopSurvivalTimer(); 
-                document.getElementById('cert-input-modal').style.display = 'flex';
-            },
+openCertificateInput() {
+    document.getElementById('certificate-view').style.display = 'none';
+
+    const nameInput = document.getElementById('student-name');
+    const classInput = document.getElementById('student-class');
+
+    // reset + ontgrendel
+    nameInput.value = "";
+    classInput.value = "";
+    nameInput.disabled = false;
+    classInput.disabled = false;
+    nameInput.classList.remove('locked');
+    classInput.classList.remove('locked');
+
+    document.getElementById('cert-input-modal').style.display = 'flex';
+
+    setTimeout(() => {
+        nameInput.focus();
+    }, 100);
+},
 
             generateCertificate() {
                 const name = document.getElementById('student-name').value.trim();

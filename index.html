@@ -1,0 +1,789 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Relative Clauses Master V72</title>
+    <style>
+        /* ============================================
+           THEMA & KLEUREN
+           ============================================ */
+        :root {
+            --primary: #4f46e5;       /* Indigo */
+            --primary-light: #e0e7ff;
+            --primary-dark: #4338ca;
+            --secondary: #ec4899;     /* Roze */
+            --accent: #06b6d4;        /* Cyan */
+            --gold: #f59e0b;          /* Goud */
+            --success: #10b981;
+            --success-bg: #ecfdf5;
+            --error: #ef4444;
+            --error-bg: #fef2f2;
+            --text-main: #0f172a;
+            --text-muted: #64748b;
+            --glass-bg: rgba(255, 255, 255, 0.95);
+            --font-main: 'Inter', system-ui, sans-serif;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: var(--font-main);
+            color: var(--text-main);
+            background: linear-gradient(135deg, #f0f9ff 0%, #e0e7ff 100%);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            background-attachment: fixed;
+        }
+
+        .container {
+            width: 100%; max-width: 900px; margin: 0 auto;
+            padding: 20px; flex: 1; display: flex; flex-direction: column;
+        }
+
+        /* HEADER & MODERNE KNOPPEN */
+        header {
+            background: rgba(255,255,255,0.9); backdrop-filter: blur(10px);
+            padding: 0.8rem 0; border-bottom: 1px solid rgba(255,255,255,0.5);
+            position: sticky; top: 0; z-index: 100;
+        }
+        .header-content {
+            max-width: 900px; margin: 0 auto; padding: 0 20px;
+            display: flex; justify-content: space-between; align-items: center;
+        }
+        .app-brand {
+            font-weight: 900; font-size: 1.4rem;
+            background: -webkit-linear-gradient(0deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            cursor: pointer;
+        }
+
+        /* ICON BUTTONS */
+        .header-actions { display: flex; gap: 10px; align-items: center; }
+
+        .btn-icon-modern {
+            width: 42px; height: 42px;
+            border-radius: 12px;
+            background: white;
+            border: 1px solid #e2e8f0;
+            color: #64748b;
+            font-size: 1.2rem;
+            display: flex; align-items: center; justify-content: center;
+            cursor: pointer; transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 2px 5px rgba(0,0,0,0.03);
+            position: relative;
+        }
+        
+        .btn-icon-modern:hover {
+            border-color: var(--primary);
+            color: var(--primary);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 15px rgba(79, 70, 229, 0.15);
+        }
+
+        /* DASHBOARD */
+        .dashboard-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; margin-top: 20px; }
+        
+        .dash-card {
+            background: white; border-radius: 20px; padding: 2rem;
+            cursor: pointer; position: relative; border: 2px solid transparent;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.02); transition: all 0.2s ease;
+        }
+        .dash-card:hover { transform: translateY(-4px); border-color: var(--primary); box-shadow: 0 10px 25px rgba(79, 70, 229, 0.15); }
+        .dash-card.mastered { border-color: var(--accent); background: linear-gradient(to bottom right, #fff, #ecfeff); }
+        .dash-card.mastered::after { content: '⭐'; position: absolute; top: 15px; right: 15px; font-size: 1.5rem; }
+        
+        .dash-icon { font-size: 2.2rem; margin-bottom: 10px; }
+        .dash-num { font-size: 0.8rem; text-transform: uppercase; color: var(--text-muted); font-weight: 700; letter-spacing: 1px; }
+        .dash-title { font-weight: 800; font-size: 1.4rem; margin-bottom: 15px; }
+
+        .progress-track { height: 8px; background: #f1f5f9; border-radius: 4px; overflow: hidden; width: 100%; margin-top: auto; }
+        .progress-fill { height: 100%; background: var(--success); width: 0%; transition: width 0.5s ease; }
+
+        /* OEFENING STIJLEN */
+        .glass-card { background: var(--glass-bg); backdrop-filter: blur(12px); border: 1px solid rgba(255,255,255,0.8); border-radius: 24px; box-shadow: 0 10px 40px rgba(0,0,0,0.05); padding: 2.5rem; margin-top: 10px; animation: fadeIn 0.3s ease; }
+        
+        /* LOCK STATE */
+        .locked { pointer-events: none; opacity: 0.85; }
+
+        .q-header { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 2rem; border-bottom: 2px solid #f1f5f9; padding-bottom: 15px; }
+        .q-title-area { flex: 1; }
+        .q-meta-area { display: flex; gap: 10px; align-items: center; }
+        .q-title { font-size: 1.5rem; font-weight: 800; line-height: 1.3; }
+        
+        .q-badge { background: #f1f5f9; padding: 5px 12px; border-radius: 8px; font-weight: 700; color: var(--text-muted); font-size: 0.9rem; white-space: nowrap; }
+        .level-badge { background: white; border: 1px solid #cbd5e1; color: var(--text-muted); padding: 5px 12px; border-radius: 8px; font-weight: 700; font-size: 0.9rem; white-space: nowrap; }
+
+        .sentence-display { font-size: 1.6rem; margin-bottom: 25px; line-height: 2.5; color: var(--text-main); }
+        .input-gap { border: none; border-bottom: 3px solid #cbd5e1; background: rgba(241,245,249,0.5); font-size: 1.6rem; color: var(--primary); font-weight: 700; width: 180px; text-align: center; border-radius: 4px 4px 0 0; outline: none; transition: 0.3s; padding: 0 10px; }
+        .input-gap:focus { border-bottom-color: var(--primary); background: white; }
+        .input-gap:disabled { color: #64748b; border-bottom-color: #cbd5e1; } /* Disabled stijl */
+        
+        .comma-word { display: inline-block; }
+        .comma-gap { display: inline-block; width: 24px; height: 24px; background: #e2e8f0; border-radius: 50%; margin: 0 4px; vertical-align: middle; cursor: pointer; transition: 0.2s; position: relative; }
+        .comma-gap.active { background: var(--primary); }
+        .comma-gap.active::after { content: ','; color: white; position: absolute; left: 50%; top: 40%; transform: translate(-50%, -50%); font-weight: bold; font-size: 1.2rem; }
+
+        .choice-card { background: white; border: 2px solid #e2e8f0; border-radius: 16px; padding: 1.5rem; margin-bottom: 16px; cursor: pointer; transition: all 0.2s; display: flex; align-items: center; gap: 20px; font-weight: 500; font-size: 1.3rem; }
+        .choice-card:hover { border-color: var(--primary); background: #f8fafc; transform: translateY(-4px); }
+        .choice-badge { min-width: 44px; height: 44px; background: var(--primary-light); color: var(--primary); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 1.2rem; flex-shrink: 0; }
+
+        .scramble-box { min-height: 100px; background: #f8fafc; border: 3px dashed #cbd5e1; border-radius: 16px; margin-bottom: 25px; padding: 20px; display: flex; flex-wrap: wrap; gap: 12px; align-items: center; }
+        .chip { background: white; border: 1px solid #cbd5e1; border-bottom: 4px solid #cbd5e1; padding: 12px 24px; border-radius: 12px; font-weight: 700; font-size: 1.4rem; cursor: pointer; color: var(--primary-dark); }
+        
+        .word-interactive { padding: 4px 8px; margin: 4px; border-radius: 8px; cursor: pointer; transition: 0.2s; background: #f1f5f9; border: 2px solid transparent; }
+        .word-interactive:hover { background: #e0f2fe; color: var(--primary); }
+        .word-interactive.selected-err { background: #fee2e2; border-color: var(--error); color: var(--error); }
+
+        /* BUTTONS */
+        .btn { border: none; padding: 1rem 2rem; border-radius: 12px; font-weight: 700; cursor: pointer; font-size: 1.1rem; width: 100%; transition: 0.2s; }
+        .btn-primary { background: var(--primary); color: white; box-shadow: 0 4px 15px rgba(79, 70, 229, 0.3); }
+        .btn-primary:hover { background: var(--primary-dark); transform: translateY(-2px); }
+        .btn-outline { background: white; border: 2px solid #e2e8f0; color: var(--text-muted); width: auto; padding: 0.5rem 1rem; font-size: 0.9rem; font-weight:600; cursor:pointer;}
+        
+        /* FEEDBACK */
+        .feedback-box { margin-top: 25px; padding: 1.5rem; border-radius: 12px; display: none; animation: slideUp 0.3s ease; text-align: left; }
+        .feedback-box.correct { background: var(--success-bg); border: 1px solid var(--success-border); color: #064e3b; }
+        .feedback-box.incorrect { background: var(--error-bg); border: 1px solid var(--error-border); color: #7f1d1d; }
+        
+        .hidden { display: none !important; }
+        @keyframes fadeIn { from { opacity:0; } to { opacity:1; } }
+        @keyframes slideUp { from { opacity:0; transform:translateY(10px); } to { opacity:1; transform:translateY(0); } }
+
+        /* MODALS */
+        .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(15, 23, 42, 0.7); z-index: 2000; justify-content: center; align-items: center; backdrop-filter: blur(5px); }
+        .modal-box { background: #f8fafc; padding: 0; border-radius: 24px; max-width: 700px; width: 90%; max-height: 90vh; overflow-y: auto; position: relative; box-shadow: 0 25px 50px -12px rgba(0,0,0,0.5); }
+        .modal-header { background: white; padding: 20px 30px; border-bottom: 1px solid #e2e8f0; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 10; }
+        .modal-content { padding: 30px; }
+        .modal-close { border: none; background: #f1f5f9; width: 36px; height: 36px; border-radius: 50%; font-size: 1.2rem; cursor: pointer; color: var(--text-muted); transition:0.2s; }
+        .modal-close:hover { background: #e2e8f0; color: var(--error); transform:rotate(90deg); }
+
+        /* REGELS / SPIEKBRIEFJE */
+        .rule-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 20px; }
+        @media (max-width: 600px) { .rule-grid { grid-template-columns: 1fr; } }
+        .rule-card { background: white; border-radius: 16px; padding: 20px; box-shadow: 0 2px 10px rgba(0,0,0,0.03); border: 1px solid #e2e8f0; }
+        .rule-title { font-weight: 800; color: var(--primary); margin-bottom: 12px; display: flex; align-items: center; gap: 10px; font-size: 1.1rem; }
+        .rule-icon { background: var(--primary-light); color: var(--primary); width: 32px; height: 32px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; }
+        .rule-list li { margin-bottom: 8px; font-size: 0.95rem; color: var(--text-main); list-style: none; position: relative; padding-left: 20px; }
+        .rule-list li::before { content: '•'; color: var(--accent); position: absolute; left: 0; font-weight: bold; }
+
+        /* CERTIFICATE */
+        #certificate-view { display: none; background: white; padding: 40px; border: 10px solid var(--text-muted); border-radius: 0; text-align: center; margin: 20px auto; max-width: 800px; box-shadow: 0 10px 40px rgba(0,0,0,0.1); position: relative; }
+        #certificate-view.gold-border { border-color: var(--gold); }
+        .cert-title { font-family: 'Times New Roman', serif; color: var(--text-main); font-size: 2.5rem; margin-bottom: 10px; text-transform: uppercase; letter-spacing: 2px; }
+        .cert-title.gold { color: var(--gold); }
+        .cert-subtitle { font-size: 1.2rem; color: var(--text-muted); margin-bottom: 30px; text-transform: uppercase; letter-spacing: 4px; }
+        .cert-name { font-family: 'Cursive', serif; font-size: 2.5rem; color: var(--primary-dark); border-bottom: 2px solid #cbd5e1; display: inline-block; padding: 0 20px 10px 20px; margin: 20px 0; }
+        
+        .cert-table { width: 100%; border-collapse: collapse; margin-top: 20px; font-size: 0.95rem; text-align: left; }
+        .cert-table th { border-bottom: 2px solid #e2e8f0; padding: 8px; color: var(--text-muted); }
+        .cert-table td { border-bottom: 1px solid #f1f5f9; padding: 8px; }
+        .status-check { color: var(--success); font-weight: bold; }
+        .status-todo { color: #cbd5e1; }
+        .cert-details { display: flex; justify-content: space-between; margin-top: 40px; font-size: 1.1rem; border-top: 1px solid #e2e8f0; padding-top: 20px; }
+
+        @media print {
+            header, .dashboard-grid, #btn-home, #streak-display, .btn-primary, .modal-overlay { display: none !important; }
+            body { background: white; }
+            #certificate-view { display: block !important; border-width: 5px; box-shadow: none; width: 100%; max-width: 100%; margin: 0; }
+            .cert-title { color: black !important; }
+        }
+        
+        footer { text-align: center; padding: 40px 20px 40px 20px; border-top: 1px solid #e2e8f0; margin-top: 20px; }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="header-content">
+            <div style="display:flex; align-items:center; gap:15px;">
+                <button id="btn-home" class="btn btn-outline hidden" onclick="app.showDashboard()">⬅ Menu</button>
+                <span class="app-brand" onclick="app.showDashboard()">GrammarPro</span>
+            </div>
+            
+            <div class="header-actions">
+                <button class="btn-icon-modern" title="Mijn Rapport" onclick="app.openCertificateInput()">
+                    📊
+                </button>
+                <button class="btn-icon-modern" title="Hulp & Regels" onclick="app.toggleRules()">
+                    ❓
+                </button>
+                
+                <div id="streak-display" class="hidden" style="font-weight:700; color:#64748b; margin-left:10px;">
+                    🔥 <span id="streak-count" style="color:var(--secondary);">0</span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div id="app" class="container"></div>
+
+    <div id="rules-modal" class="modal-overlay">
+        <div class="modal-box">
+            <div class="modal-header">
+                <h2 style="color:var(--text-main); margin:0;">Grammatica Hulp 🧠</h2>
+                <button class="modal-close" onclick="app.toggleRules()">✖</button>
+            </div>
+            <div class="modal-content">
+                <div class="rule-grid">
+                    <div class="rule-card">
+                        <div class="rule-title"><span class="rule-icon">👤</span> Personen</div>
+                        <ul class="rule-list">
+                            <li><strong>Who</strong> (onderwerp)</li>
+                            <li><strong>Whom</strong> (na voorzetsel)</li>
+                            <li><strong>Whose</strong> (bezit)</li>
+                        </ul>
+                    </div>
+                    <div class="rule-card">
+                        <div class="rule-title"><span class="rule-icon">📦</span> Dingen & Dieren</div>
+                        <ul class="rule-list">
+                            <li><strong>Which</strong> (standaard)</li>
+                            <li><strong>That</strong> (mag ook, behalve na komma)</li>
+                            <li><strong>Of which</strong> (bezit)</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="cert-input-modal" class="modal-overlay">
+        <div class="modal-box" style="text-align:center;">
+            <div style="padding:40px;">
+                <button class="modal-close" style="position:absolute; top:20px; right:20px;" onclick="document.getElementById('cert-input-modal').style.display='none'">✖</button>
+                <h2 style="color:var(--primary); margin-bottom:10px; font-size:2rem;">Voortgang & Rapport</h2>
+                <p style="margin-bottom:20px;">Vul je gegevens in om je resultaten te bekijken en te printen.</p>
+                <input type="text" id="student-name" class="input-gap" style="width:100%; margin-bottom:20px; text-align:left;" placeholder="Voornaam + Achternaam">
+                <input type="text" id="student-class" class="input-gap" style="width:100%; margin-bottom:30px; text-align:left;" placeholder="Klas">
+                <button class="btn btn-primary" onclick="app.generateCertificate()">Toon Rapport</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="certificate-view">
+        <div style="padding:40px; height:100%;">
+            <div id="cert-main-title" class="cert-title">Voortgangsrapport</div>
+            <div id="cert-sub-title" class="cert-subtitle">Relative Clauses</div>
+            <p style="font-size:1.2rem;">Rapport van:</p>
+            <div id="cert-display-name" class="cert-name">Naam Leerling</div>
+
+            <table class="cert-table">
+                <thead><tr><th style="width:70%">Onderdeel</th><th style="text-align:center;">Status</th></tr></thead>
+                <tbody id="cert-table-body"></tbody>
+            </table>
+
+            <div class="cert-details">
+                <div style="text-align:left;">
+                    <strong>Klas:</strong> <span id="cert-display-class">...</span><br>
+                    <strong>Datum:</strong> <span id="cert-display-date">...</span>
+                </div>
+                <div style="text-align:right;">
+                    <div id="cert-code" style="font-family:monospace; font-weight:bold; color:var(--text-main);">CODE</div>
+                </div>
+            </div>
+            
+            <div id="cert-controls" style="margin-top:30px;">
+                <button class="btn btn-primary" style="width:auto; margin-right:10px;" onclick="window.print()">🖨️ Print / PDF</button>
+                <button class="btn btn-outline" style="width:auto;" onclick="app.showDashboard()">Terug</button>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <button id="footer-reset-btn" class="btn-footer" style="color:var(--error);" onclick="app.resetAllData()">🗑️ Reset Voortgang</button>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <script>
+        // DATA - ALLE 10 TYPES
+        const exercises = {
+            type1: { id:'type1', title:"Kies de juiste zin", icon:"✅", levels:{1:[{q:"Welke zin is correct?",opts:[{t:"The man he is working.",id:'A'},{t:"The man who is working.",id:'B'}],correct:'B',exp:"Geen 'he' na who."},{q:"Welke zin is correct?",opts:[{t:"The book which is red.",id:'A'},{t:"The book who is red.",id:'B'}],correct:'A',exp:"Dingen = which."},{q:"Welke zin is correct?",opts:[{t:"The place where we met.",id:'A'},{t:"The place that we met.",id:'B'}],correct:'A',exp:"Place = where."},{q:"Welke zin is correct?",opts:[{t:"The girl who lives here.",id:'A'},{t:"The girl which lives here.",id:'B'}],correct:'A',exp:"Mensen = who."},{q:"Welke zin is correct?",opts:[{t:"He is the man helped me.",id:'A'},{t:"He is the man who helped me.",id:'B'}],correct:'B',exp:"Onderwerp nodig."}],2:[{q:"Welke zin is correct?",opts:[{t:"The film which I saw it.",id:'A'},{t:"The film which I saw.",id:'B'}],correct:'B',exp:"Geen dubbel object."},{q:"Welke zin is correct?",opts:[{t:"The woman whose car.",id:'A'},{t:"The woman who's car.",id:'B'}],correct:'A',exp:"Whose = bezit."},{q:"Welke zin is correct?",opts:[{t:"The dog, which bit me.",id:'A'},{t:"The dog, that bit me.",id:'B'}],correct:'A',exp:"Na komma geen that."},{q:"Welke zin is correct?",opts:[{t:"The car I bought.",id:'A'},{t:"The car what I bought.",id:'B'}],correct:'A',exp:"Geen what."},{q:"Welke zin is correct?",opts:[{t:"The house where I live.",id:'A'},{t:"The house which I live.",id:'B'}],correct:'A',exp:"Where = in which."}],3:[{q:"Welke zin is correct?",opts:[{t:"The book what Tom gave.",id:'A'},{t:"The book that Tom gave.",id:'B'}],correct:'B',exp:"Geen what."},{q:"Welke zin is correct?",opts:[{t:"All that glitters.",id:'A'},{t:"All which glitters.",id:'B'}],correct:'A',exp:"All + that."},{q:"Welke zin is correct?",opts:[{t:"To whom I spoke.",id:'A'},{t:"To who I spoke.",id:'B'}],correct:'A',exp:"Na voorzetsel whom."},{q:"Welke zin is correct?",opts:[{t:"What he said.",id:'A'},{t:"That what he said.",id:'B'}],correct:'A',exp:"Geen that what."},{q:"Welke zin is correct?",opts:[{t:"Both of which.",id:'A'},{t:"Both of that.",id:'B'}],correct:'A',exp:"Of + which."}]} },
+            type2: { id:'type2', title:"Zinnen combineren", icon:"🔗", levels:{1:[{t1:"This is the book.",t2:"It is red.",start:"This is the book",end:"is red.",correct:["which","that"],displayCorrect:"which/that",exp:"Ding -> which."},{t1:"I met a girl.",t2:"She works here.",start:"I met a girl",end:"works here.",correct:["who","that"],displayCorrect:"who/that",exp:"Persoon."},{t1:"That is the park.",t2:"We play there.",start:"That is the park",end:"we play.",correct:["where"],displayCorrect:"where",exp:"Plaats."},{t1:"He is the man.",t2:"He saved me.",start:"He is the man",end:"saved me.",correct:["who","that"],displayCorrect:"who",exp:"Subject."},{t1:"The car is fast.",t2:"It is new.",start:"The car",end:"is new is fast.",correct:["which","that"],displayCorrect:"which",exp:"Ding."}],2:[{t1:"This is the book.",t2:"Tom gave it.",start:"This is the book",end:"Tom gave.",correct:["which","that","-"],displayCorrect:"which/that/-",exp:"Object mag weg."},{t1:"She is the woman.",t2:"Her son is doctor.",start:"She is the woman",end:"son is doctor.",correct:["whose"],displayCorrect:"whose",exp:"Bezit."},{t1:"The man is angry.",t2:"You hit his car.",start:"The man",end:"car you hit is angry.",correct:["whose"],displayCorrect:"whose",exp:"Bezit."},{t1:"This is the hotel.",t2:"We stayed in it.",start:"This is the hotel",end:"we stayed in.",correct:["which","that","-"],displayCorrect:"which/that",exp:"Preposition achteraan."},{t1:"The movie was bad.",t2:"We saw it.",start:"The movie",end:"we saw was bad.",correct:["which","that","-"],displayCorrect:"which/that",exp:"Object."}],3:[{t1:"This is the key.",t2:"I opened with it.",start:"This is the key with",end:"I opened.",correct:["which"],displayCorrect:"which",exp:"Na voorzetsel."},{t1:"Mr. Jones is nice.",t2:"I work for him.",start:"Mr. Jones, for",end:"I work, is nice.",correct:["whom"],displayCorrect:"whom",exp:"Voorzetsel+persoon."},{t1:"I have dogs.",t2:"Two are black.",start:"I have dogs, two of",end:"are black.",correct:["which"],displayCorrect:"which",exp:"Quantifier."},{t1:"She said something.",t2:"It was true.",start:"",end:"she said was true.",correct:["what"],displayCorrect:"what",exp:"What = the thing that."},{t1:"He failed.",t2:"This surprised me.",start:"He failed,",end:"surprised me.",correct:["which"],displayCorrect:"which",exp:"Sentence relative."}]} },
+            type3: { id:'type3', title:"Invuloefening", icon:"⌨️", levels:{1:[{q:"The man ___ lives here.",correct:["who","that"],displayCorrect:"who",exp:"Subject."},{q:"The book ___ is red.",correct:["which","that"],displayCorrect:"which",exp:"Ding."},{q:"The place ___ we swim.",correct:["where"],displayCorrect:"where",exp:"Plaats."},{q:"The girl ___ called.",correct:["who","that"],displayCorrect:"who",exp:"Subject."},{q:"The car ___ hit me.",correct:["which","that"],displayCorrect:"which",exp:"Ding."}],2:[{q:"The boy ___ bike broke.",correct:["whose"],displayCorrect:"whose",exp:"Bezit."},{q:"The house ___ I was born.",correct:["where"],displayCorrect:"where",exp:"Plaats."},{q:"The letter ___ I wrote.",correct:["that","which","-"],displayCorrect:"that/which",exp:"Object."},{q:"The people ___ we met.",correct:["who","that","-"],displayCorrect:"who/that",exp:"Object."},{q:"Friend ___ father is pilot.",correct:["whose"],displayCorrect:"whose",exp:"Bezit."}],3:[{q:"___ you need is love.",correct:["what"],displayCorrect:"what",exp:"Start zin."},{q:"He lied, ___ was bad.",correct:["which"],displayCorrect:"which",exp:"Hele zin."},{q:"Man to ___ I spoke.",correct:["whom"],displayCorrect:"whom",exp:"Na voorzetsel."},{q:"Room in ___ we sleep.",correct:["which"],displayCorrect:"which",exp:"Na in."},{q:"Two men, neither of ___ I knew.",correct:["whom"],displayCorrect:"whom",exp:"Quantifier."}]} },
+            type4: { id:'type4', title:"Komma plaatsen", icon:"✒️", levels:{1:[{text:"The man who is working here is my boss.",correctIndices:[],displaySentence:"Geen komma's",exp:"Defining."},{text:"My father who is 50 is a doctor.",correctIndices:[1,4],displaySentence:"My father, who is 50, is a doctor.",exp:"Non-defining."},{text:"The car which is red is mine.",correctIndices:[],displaySentence:"Geen komma's",exp:"Defining."},{text:"Paris which is big is beautiful.",correctIndices:[0,4],displaySentence:"Paris, which is big, is beautiful.",exp:"Uniek."},{text:"The girl who called is my sister.",correctIndices:[],displaySentence:"Geen komma's",exp:"Defining."}],2:[{text:"John whose car broke is late.",correctIndices:[0,4],displaySentence:"John, whose car broke, is late.",exp:"Naam."},{text:"The house where I live is old.",correctIndices:[],displaySentence:"Geen komma's",exp:"Defining."},{text:"My bike which I bought is stolen.",correctIndices:[1,4],displaySentence:"My bike, which I bought, is stolen.",exp:"Uniek bezit."},{text:"I met a man who works at NASA.",correctIndices:[],displaySentence:"Geen komma's",exp:"Defining."},{text:"London where I was born is huge.",correctIndices:[0,5],displaySentence:"London, where I was born, is huge.",exp:"Stad."}],3:[{text:"He passed which surprised everyone.",correctIndices:[2],displaySentence:"He passed, which surprised everyone.",exp:"Sentence relative."},{text:"My sister Mary who is a nurse lives here.",correctIndices:[2,6],displaySentence:"My sister Mary, who is a nurse, lives here.",exp:"Apposition."},{text:"The players who were tired left.",correctIndices:[],displaySentence:"Geen komma's",exp:"Defining (degenen die moe waren)."},{text:"The players who were tired left.",correctIndices:[1,5],displaySentence:"The players, who were tired, left.",exp:"Non-defining (ze waren allemaal moe)."},{text:"We stayed at the Ritz which is expensive.",correctIndices:[4],displaySentence:"We stayed at the Ritz, which is expensive.",exp:"Naam."}]} },
+            type5: { id:'type5', title:"Defining vs non-defining", icon:"⚖️", levels:{1:[{q:"The man **who called** is boss.",type:"DEF",exp:"Noodzakelijk."},{q:"My dad, **who works here**, is nice.",type:"NON",exp:"Komma's."},{q:"The car **that is red** is mine.",type:"DEF",exp:"Specificeert."},{q:"Paris, **which is big**, is nice.",type:"NON",exp:"Uniek."},{q:"A boy **who lies** is bad.",type:"DEF",exp:"Definieert."}],2:[{q:"The book **(that) I read**.",type:"DEF",exp:"Defining."},{q:"Mr. Smith, **whom I met**, is rich.",type:"NON",exp:"Naam."},{q:"I have a sister **who is 10**.",type:"DEF",exp:"Meerdere zussen."},{q:"I have a sister, **who is 10**.",type:"NON",exp:"Eén zus."},{q:"The place **where we met**.",type:"DEF",exp:"Specificeert."}],3:[{q:"He helped, **which was nice**.",type:"NON",exp:"Sentence relative."},{q:"Anyone **who wants** is welcome.",type:"DEF",exp:"Anyone."},{q:"My youngest son, **who is 5**.",type:"NON",exp:"Uniek."},{q:"The sun, **which is hot**.",type:"NON",exp:"Uniek."},{q:"Diamonds **which are mined there**.",type:"DEF",exp:"Specifiek."}]} },
+            type6: { id:'type6', title:"Husselzinnen", icon:"🧩", levels:{1:[{text:"The man who called is here .",exp:"Subject+RC."},{text:"I have a book which is old .",exp:"Standard."},{text:"This is the place where we met .",exp:"Place+Where."},{text:"He is the boy who won .",exp:"Person+Who."},{text:"The car that I saw is red .",exp:"Ding+That."}],2:[{text:"The girl whose bike broke cried .",exp:"Whose."},{text:"Paris , which is big , is beautiful .",exp:"Komma's."},{text:"My mum , who cooks well , is nice .",exp:"Komma's."},{text:"The man I met is famous .",exp:"Contact clause."},{text:"The film we saw was boring .",exp:"Contact clause."}],3:[{text:"He failed , which surprised me .",exp:"Komma voor which."},{text:"The house in which I live is old .",exp:"Preposition."},{text:"I have two cars , both of which are red .",exp:"Quantifier."},{text:"What he said is true .",exp:"What start."},{text:"The man to whom I spoke left .",exp:"To whom."}]} },
+            type7: { id:'type7', title:"Foutenspeurder", icon:"🕵️‍♀️", levels:{1:[{text:"The man which lives here.",badIndex:2,badWord:"which",exp:"Man=Who."},{text:"The book who is red.",badIndex:2,badWord:"who",exp:"Book=Which."},{text:"Place that we can eat.",badIndex:1,badWord:"that",exp:"Place=Where."},{text:"Girl who she called.",badIndex:2,badWord:"she",exp:"Dubbel subject."},{text:"Car which I bought it.",badIndex:4,badWord:"it",exp:"Dubbel object."}],2:[{text:"The man, that lives here.",badIndex:2,badWord:"that",exp:"Geen that na komma."},{text:"Woman which car.",badIndex:1,badWord:"which",exp:"Whose car."},{text:"Town that I was born.",badIndex:1,badWord:"that",exp:"Town where."},{text:"My dad that is 50.",badIndex:2,badWord:"that",exp:"Komma+who."},{text:"The boy, who is tall is nice.",badIndex:3,badWord:"tall",exp:"2e komma mist."}],3:[{text:"That what he said.",badIndex:0,badWord:"That",exp:"Niet that what."},{text:"To who I spoke.",badIndex:1,badWord:"who",exp:"To whom."},{text:"All what I want.",badIndex:1,badWord:"what",exp:"All that."},{text:"Both of that.",badIndex:2,badWord:"that",exp:"Of which."},{text:"In where I live.",badIndex:1,badWord:"where",exp:"In which."}]} },
+            type8: { id:'type8', title:"De invoeger", icon:"📌", levels:{1:[{main:"The boy is my brother.",clause:"who is crying",insertAfter:1,correctSentence:"The boy who is crying is my brother.",exp:"Na boy."},{main:"The car is fast.",clause:"which is red",insertAfter:1,correctSentence:"The car which is red is fast.",exp:"Na car."},{main:"I read a book.",clause:"that was nice",insertAfter:3,correctSentence:"I read a book that was nice.",exp:"Na book."},{main:"This is the house.",clause:"where I live",insertAfter:3,correctSentence:"This is the house where I live.",exp:"Na house."},{main:"The man is angry.",clause:"who fell",insertAfter:1,correctSentence:"The man who fell is angry.",exp:"Na man."}],2:[{main:"My sister lives in London.",clause:"who is a nurse",insertAfter:1,correctSentence:"My sister, who is a nurse, lives in London.",exp:"Na sister."},{main:"The laptop was expensive.",clause:"which broke",insertAfter:1,correctSentence:"The laptop which broke was expensive.",exp:"Na laptop."},{main:"I saw the girl.",clause:"whose dog bit me",insertAfter:3,correctSentence:"I saw the girl whose dog bit me.",exp:"Na girl."},{main:"Paris is beautiful.",clause:"which is big",insertAfter:0,correctSentence:"Paris, which is big, is beautiful.",exp:"Na Paris."},{main:"The team won.",clause:"which I support",insertAfter:1,correctSentence:"The team which I support won.",exp:"Na team."}],3:[{main:"He passed.",clause:"which was great",insertAfter:1,correctSentence:"He passed, which was great.",exp:"Achteraan."},{main:"The boss was angry.",clause:"to whom I spoke",insertAfter:1,correctSentence:"The boss to whom I spoke was angry.",exp:"Na boss."},{main:"My friends are here.",clause:"all of whom are students",insertAfter:1,correctSentence:"My friends, all of whom are students, are here.",exp:"Na friends."},{main:"The theory is complex.",clause:"on which this is based",insertAfter:1,correctSentence:"The theory on which this is based is complex.",exp:"Na theory."},{main:"I bought the car.",clause:"for which I saved",insertAfter:3,correctSentence:"I bought the car for which I saved.",exp:"Na car."}]} },
+            type9: { id:'type9', title:"Weglaten of niet?", icon:"👻", levels:{1:[{q:"The book [that] I bought.",type:"OMIT",exp:"Nieuw subject."},{q:"The man [who] lives here.",type:"KEEP",exp:"Who=subject."},{q:"The film [which] we saw.",type:"OMIT",exp:"Nieuw subject."},{q:"The girl [who] won.",type:"KEEP",exp:"Who=subject."},{q:"The car [that] hit me.",type:"KEEP",exp:"That=subject."}],2:[{q:"The man [who] I met.",type:"OMIT",exp:"Nieuw subject."},{q:"The woman [whose] cat.",type:"KEEP",exp:"Whose blijft."},{q:"The house [where] I live.",type:"KEEP",exp:"Where blijft."},{q:"The pen [which] is on desk.",type:"KEEP",exp:"Which=subject."},{q:"Person [that] you like.",type:"OMIT",exp:"Nieuw subject."}],3:[{q:"Reason [why] I came.",type:"OMIT",exp:"Why mag weg."},{q:"Hotel [that] we stayed in.",type:"OMIT",exp:"Prep achteraan."},{q:"Man to [whom] I spoke.",type:"KEEP",exp:"Na prep niet."},{q:"Day [when] we met.",type:"OMIT",exp:"When mag weg."},{q:"Player [who] was injured.",type:"OMIT",exp:"Reduced RC."}]} },
+            type10: { id:'type10', title:"De eindbaas 💀", icon:"💣", levels:{
+                1:[
+                    {q:"The man ___ called me.",correct:"who",exp:"Subject (Who/That)."},
+                    {q:"The book ___ I read.",correct:"which",exp:"Object (Which/That)."},
+                    {q:"The place ___ we met.",correct:"where",exp:"Place (Where)."},
+                    {q:"The girl ___ helped me.",correct:"who",exp:"Person."},
+                    {q:"The car ___ is red.",correct:"which",exp:"Thing."}
+                ],
+                2:[
+                    {q:"The man [who] I met.",opts:["Keep","Omit"],correct:"Omit",exp:"Je kunt 'who' weglaten."},
+                    {q:"The woman ___ car.",correct:"whose",exp:"Bezit (Whose)."},
+                    {q:"The house [where] I live.",opts:["Keep","Omit"],correct:"Keep",exp:"Where mag niet zomaar weg."},
+                    {q:"The keys for ___ I looked.",correct:"which",exp:"Na voorzetsel: which."},
+                    {q:"The boy ___ father is ill.",correct:"whose",exp:"Bezit."}
+                ],
+                3:[
+                    {q:"___ he said was true.",correct:"what",exp:"Start van zin = What."},
+                    {q:"He passed, ___ was nice.",correct:"which",exp:"Verwijst naar hele zin."},
+                    {q:"Two men, both of ___ left.",correct:"whom",exp:"Quantifier + mensen = whom."},
+                    {q:"Two cars, both of ___ red.",correct:"which",exp:"Quantifier + dingen = which."},
+                    {q:"The man to ___ I spoke.",correct:"whom",exp:"Na voorzetsel + mens = whom."}
+                ]} 
+            }
+        };
+
+        const state = { 
+            currentExercise: null, activeQuestions: [], qIndex: 0, streak: 0, 
+            currentScore: 0, bestScores: {}, commaSelection: [], wordSelection: [], 
+            availableWords: [], errorSelection: null, insertSelection: null, 
+            timerInterval: null, currentLevel: 1 
+        };
+        const STORAGE_KEY = 'grammarPro_v72';
+
+        const app = {
+            init() { 
+                try {
+                    const saved = localStorage.getItem(STORAGE_KEY);
+                    if (saved) state.bestScores = JSON.parse(saved);
+                } catch(e) { console.error(e); }
+                this.showDashboard(); 
+                
+                document.addEventListener('keydown', (e) => {
+                    if(e.key === 'Enter') {
+                        if(document.getElementById('cert-input-modal').style.display === 'flex') {
+                            app.generateCertificate(); return;
+                        }
+                        const fbBox = document.getElementById('feedback');
+                        
+                        if(fbBox && fbBox.style.display !== 'none' && fbBox.style.display !== '') {
+                             app.nextQuestion();
+                        } else {
+                            const checkBtn = document.getElementById('btn-check');
+                            if(checkBtn && !checkBtn.classList.contains('hidden')) checkBtn.click();
+                        }
+                    }
+                });
+            },
+
+            toggleRules() {
+                const el = document.getElementById('rules-modal');
+                el.style.display = (el.style.display === 'flex') ? 'none' : 'flex';
+            },
+
+            checkGlobalProgress() {
+                let allDone = true;
+                Object.values(exercises).forEach(ex => {
+                    if((state.bestScores[`${ex.id}_L3`] || 0) < 5) allDone = false;
+                });
+                return allDone;
+            },
+
+            showDashboard() {
+                this.stopSurvivalTimer();
+                document.getElementById('app').style.display = 'block';
+                document.getElementById('certificate-view').style.display = 'none';
+                document.getElementById('btn-home').classList.add('hidden');
+                document.getElementById('streak-display').classList.add('hidden');
+                
+                const footerResetBtn = document.getElementById('footer-reset-btn');
+                if(footerResetBtn) footerResetBtn.classList.remove('hidden');
+                
+                let html = `<div class="dashboard-header fade-in"><h1 class="main-title">Relative Clauses</h1></div>`;
+                
+                html += `<div class="dashboard-grid fade-in">`;
+                
+                Object.values(exercises).forEach((ex, i) => {
+                    const l1 = state.bestScores[`${ex.id}_L1`] || 0;
+                    const l2 = state.bestScores[`${ex.id}_L2`] || 0;
+                    const l3 = state.bestScores[`${ex.id}_L3`] || 0;
+                    
+                    let progress = 0;
+                    if(l3 === 5) progress = 100;
+                    else if(l2 === 5) progress = 66;
+                    else if(l1 === 5) progress = 33;
+                    
+                    const isMastered = progress === 100;
+
+                    html += `
+                    <div class="dash-card ${isMastered ? 'mastered' : ''}" onclick="app.startExercise('${ex.id}', ${l1<5?1 : (l2<5?2 : 3)})">
+                        <div class="dash-num">Oefening ${i+1}</div>
+                        <div class="dash-title">${ex.title}</div>
+                        <div class="dash-icon">${ex.icon}</div>
+                        
+                        <div style="display:flex; gap:5px; margin-bottom:10px; justify-content:center;">
+                            <div style="width:10px; height:10px; border-radius:50%; background:${l1===5 ? 'var(--success)' : '#e2e8f0'}"></div>
+                            <div style="width:10px; height:10px; border-radius:50%; background:${l2===5 ? 'var(--success)' : '#e2e8f0'}"></div>
+                            <div style="width:10px; height:10px; border-radius:50%; background:${l3===5 ? 'var(--success)' : '#e2e8f0'}"></div>
+                        </div>
+
+                        <div class="progress-track"><div class="progress-fill" style="width:${progress}%"></div></div>
+                    </div>`;
+                });
+                html += `</div>`;
+                document.getElementById('app').innerHTML = html;
+            },
+
+            openCertificateInput() {
+                document.getElementById('cert-input-modal').style.display = 'flex';
+            },
+
+            generateCertificate() {
+                const name = document.getElementById('student-name').value.trim();
+                const cls = document.getElementById('student-class').value.trim();
+                
+                if(!name || !cls) { alert("Vul aub je naam en klas in!"); return; }
+
+                document.getElementById('cert-input-modal').style.display = 'none';
+                document.getElementById('app').style.display = 'none'; 
+                const certView = document.getElementById('certificate-view');
+                certView.style.display = 'block';
+
+                document.getElementById('cert-display-name').innerText = name;
+                document.getElementById('cert-display-class').innerText = cls;
+                
+                const now = new Date();
+                document.getElementById('cert-display-date').innerText = now.toLocaleDateString('nl-NL');
+                
+                // Genereer de tabel inhoud
+                const tbody = document.getElementById('cert-table-body');
+                tbody.innerHTML = '';
+                let allDone = true;
+
+                Object.values(exercises).forEach(ex => {
+                    const l3 = state.bestScores[`${ex.id}_L3`] || 0;
+                    const isDone = l3 >= 5;
+                    if(!isDone) allDone = false;
+                    
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td>${ex.title}</td>
+                        <td style="text-align:center;">${isDone ? '<span class="status-check">✅ Voltooid</span>' : '<span class="status-todo">⬜ Nog te doen</span>'}</td>
+                    `;
+                    tbody.appendChild(row);
+                });
+
+                // Check of alles klaar is voor het "Gouden" effect
+                const mainTitle = document.getElementById('cert-main-title');
+                const subTitle = document.getElementById('cert-sub-title');
+                if(allDone) {
+                    mainTitle.innerText = "GOUDEN DIPLOMA";
+                    mainTitle.classList.add('gold');
+                    certView.classList.add('gold-border');
+                    subTitle.innerText = "EXPERT NIVEAU BEHAALD";
+                    confetti({ particleCount: 300, spread: 100, origin: { y: 0.6 } });
+                } else {
+                    mainTitle.innerText = "Voortgangsrapport";
+                    mainTitle.classList.remove('gold');
+                    certView.classList.remove('gold-border');
+                    subTitle.innerText = "Tussenstand";
+                }
+
+                // Random code genereren
+                const code = "RC-" + Math.floor(now.getTime()/1000).toString(16).toUpperCase() + "-" + name.substring(0,2).toUpperCase();
+                document.getElementById('cert-code').innerText = code;
+
+                if(!document.getElementById('cert-controls')) {
+                    const btnDiv = document.createElement('div');
+                    btnDiv.id = 'cert-controls';
+                    btnDiv.style.marginTop = "30px";
+                    btnDiv.innerHTML = `
+                        <button class="btn btn-primary" style="width:auto; margin-right:10px;" onclick="window.print()">🖨️ Print / PDF</button>
+                        <button class="btn btn-outline" style="width:auto;" onclick="app.showDashboard()">Terug naar Menu</button>
+                    `;
+                    certView.appendChild(btnDiv);
+                }
+            },
+
+            startExercise(id, level = 1) {
+                state.currentExercise = id; state.qIndex = 0; state.currentScore = 0; state.currentLevel = level;
+                state.activeQuestions = JSON.parse(JSON.stringify(exercises[id].levels[level])).sort(() => Math.random() - 0.5);
+                
+                document.getElementById('btn-home').classList.remove('hidden');
+                document.getElementById('streak-display').classList.remove('hidden');
+                const footerResetBtn = document.getElementById('footer-reset-btn');
+                if(footerResetBtn) footerResetBtn.classList.add('hidden');
+
+                this.renderQuestion();
+            },
+
+            renderQuestion() {
+                if(state.qIndex >= state.activeQuestions.length) { this.showSummary(); return; }
+                const q = state.activeQuestions[state.qIndex];
+                const type = state.currentExercise;
+
+                let html = `
+                <div class="glass-card">
+                    <div class="q-header">
+                        <div class="q-title-area">
+                            <div class="dash-num" style="color:var(--primary); margin-bottom:5px;">${exercises[type].title}</div>
+                            <div class="q-title">`;
+                
+                if(type==='type1') html += q.q; 
+                else if(type==='type2') html += "Combineer de zinnen:";
+                else if(type==='type3') html += "Vul het juiste woord in:";
+                else if(type==='type4') html += "Klik op de bolletjes waar komma's moeten:";
+                else if(type==='type5') html += "Noodzakelijk (Defining) of niet?";
+                else if(type==='type6') html += "Sleep de woorden én leestekens in de juiste volgorde:";
+                else if(type==='type7') html += "Klik op het FOUTE woord:";
+                else if(type==='type8') html += "Waar moet de bijzin komen?";
+                else if(type==='type9') html += "Mag het woord tussen [haakjes] weg?";
+                else if(type==='type10') html += "<span class='survival-badge'>Tijd: 15s</span> <span style='color:var(--error); font-weight:bold;'>Survival Mode</span>";
+                
+                html += `   </div>
+                        </div>
+                        <div class="q-meta-area">
+                            <span class="level-badge">Level ${state.currentLevel}</span>
+                            <span class="q-badge">${state.qIndex+1} / ${state.activeQuestions.length}</span>
+                        </div>
+                    </div>`;
+
+                if(type === 'type1' || (type==='type10' && q.opts && q.opts.length>2)) {
+                    q.opts.forEach(o => html += `<div class="choice-card" onclick="app.checkAnswer('${o.id || o}')"><div class="choice-badge">${o.id || '?'}</div>${o.t || o}</div>`);
+                } 
+                else if(type === 'type2') {
+                    html += `<div style="text-align:center; font-weight:500; margin-bottom:15px;">${q.t1} + ${q.t2}</div>
+                    <div class="sentence-display" style="text-align:center;">${q.start} <input type="text" id="ans-input" class="input-gap" autocomplete="off"> ${q.end}</div>
+                    <button id="btn-check" class="btn btn-primary" onclick="app.checkAnswer()">Controleer</button>`;
+                }
+                else if(type === 'type3' || (type==='type10' && !q.opts)) {
+                    if(type==='type10') setTimeout(() => app.startSurvivalTimer(), 100);
+                    
+                    let sentenceHtml = "";
+                    if(q.q.includes('___')) {
+                        sentenceHtml = q.q.replace(/_+/, `<input type="text" id="ans-input" class="input-gap" autocomplete="off">`);
+                    } else {
+                        sentenceHtml = q.q;
+                    }
+
+                    if(type==='type10') sentenceHtml = `<div class="timer-container"><div id="survival-bar" class="timer-bar"></div></div><div class="sentence-display">${sentenceHtml}</div>`;
+                    else sentenceHtml = `<div class="sentence-display">${sentenceHtml}</div>`;
+
+                    html += sentenceHtml;
+
+                    if(!q.q.includes('___') && !document.getElementById('ans-input')) {
+                        html += `<input type="text" id="ans-input" class="input-gap" style="width:100%; margin-bottom:15px;" placeholder="..." autocomplete="off">`;
+                    }
+
+                    html += `<button id="btn-check" class="btn btn-primary" onclick="app.checkAnswer()">Controleer</button>`;
+                }
+                else if(type === 'type4') {
+                    state.commaSelection = [];
+                    html += `<div class="sentence-display" style="text-align:center;">`;
+                    q.text.split(' ').forEach((w,i) => { html += `<span class="comma-word">${w}</span>`; if(i < q.text.split(' ').length - 1) html += `<span class="comma-gap" id="cg-${i}" onclick="app.toggleComma(${i})"></span>`; });
+                    html += `</div><button id="btn-check" class="btn btn-primary" onclick="app.checkAnswer()">Controleer</button>`;
+                }
+                else if(type === 'type5') {
+                    const segs = q.q.split('**');
+                    html += `<div class="sentence-display" style="text-align:center;">${segs[0]}<strong>${segs[1]}</strong>${segs[2]}</div>
+                             <div style="display:flex; gap:10px;"><button class="btn btn-primary" onclick="app.checkAnswer('DEF')">Defining</button><button class="btn btn-primary" style="background:var(--secondary)" onclick="app.checkAnswer('NON')">Non-defining</button></div>`;
+                }
+                else if(type === 'type6') {
+                    state.wordSelection = []; state.availableWords = q.text.split(' ').sort(()=>Math.random()-0.5);
+                    html += `<div id="scramble-tgt" class="scramble-box"></div><div id="scramble-src" class="scramble-box" style="border-style:solid; background:transparent;"></div><button id="btn-check" class="btn btn-primary" onclick="app.checkAnswer()">Controleer</button>`;
+                }
+                else if(type === 'type7') {
+                    state.errorSelection = null;
+                    html += `<div class="sentence-display" style="text-align:center;">`;
+                    q.text.split(' ').forEach((w,i) => html += `<span class="word-interactive" id="ew-${i}" onclick="app.selectError(${i})">${w}</span> `);
+                    html += `</div><div style="display:flex; gap:10px; margin-top:20px;"><button class="btn btn-primary" style="background:var(--success)" onclick="app.checkAnswer(true)">Geen Fout</button><button class="btn btn-primary" style="background:var(--error)" onclick="app.checkAnswer(false)">Fout Gevonden</button></div>`;
+                }
+                else if(type === 'type8') {
+                    state.insertSelection = null;
+                    html += `<div style="text-align:center; margin-bottom:20px; font-weight:700; color:var(--primary); font-size:1.2rem;">${q.clause}</div><div class="sentence-display" style="text-align:center;">`;
+                    let cleanSentence = q.main; let endPunctuation = "";
+                    if(cleanSentence.endsWith('.') || cleanSentence.endsWith('!') || cleanSentence.endsWith('?')) {
+                        endPunctuation = cleanSentence.slice(-1); cleanSentence = cleanSentence.slice(0, -1);
+                    }
+                    const words = cleanSentence.split(' ');
+                    words.forEach((w,i) => {
+                        html += `${w}`;
+                        html += `<span class="word-interactive" id="spot-${i}" style="width:20px; height:20px; vertical-align:middle; background:#e2e8f0;" onclick="app.selectInsert(${i})"></span> `;
+                    });
+                    html += endPunctuation;
+                    html += `</div><button id="btn-check" class="btn btn-primary" onclick="app.checkAnswer()">Plaatsen</button>`;
+                }
+                else if(type === 'type9' || (type==='type10' && q.opts && q.opts.includes('Keep'))) {
+                    html += `<div class="sentence-display" style="text-align:center;">${q.q.replace('[', '<span style="color:var(--secondary);">[').replace(']', ']</span>')}</div>
+                             <div style="display:flex; gap:10px; justify-content:center;"><button class="btn btn-primary" onclick="app.checkAnswer('KEEP')">Moet blijven</button><button class="btn btn-primary" style="background:var(--accent); color:#000;" onclick="app.checkAnswer('OMIT')">Mag weg</button></div>`;
+                }
+
+                html += `<div id="feedback" class="feedback-box">
+                            <div class="fb-header" id="fb-header"></div>
+                            <div class="fb-content"><span id="fb-correction" class="fb-correction"></span><span id="fb-exp"></span></div>
+                            <button id="btn-next" class="btn btn-primary" style="margin-top:15px; width:auto; float:right;" onclick="app.nextQuestion()">Volgende ➡</button>
+                            <div style="clear:both;"></div>
+                         </div>
+                    </div>`;
+
+                document.getElementById('app').innerHTML = html;
+                if(document.getElementById('ans-input')) document.getElementById('ans-input').focus();
+                if(type === 'type6') this.renderScramble();
+            },
+
+            // --- HELPER FUNCTIONS ---
+            toggleComma(i) {
+                if(document.getElementById('feedback').style.display === 'block') return;
+                const el = document.getElementById(`cg-${i}`);
+                if(state.commaSelection.includes(i)){ state.commaSelection = state.commaSelection.filter(x=>x!==i); el.classList.remove('active'); } 
+                else { state.commaSelection.push(i); el.classList.add('active'); }
+            },
+            renderScramble() {
+                const tgt = document.getElementById('scramble-tgt'); const src = document.getElementById('scramble-src');
+                tgt.innerHTML = ''; src.innerHTML = '';
+                state.wordSelection.forEach((w,i) => tgt.innerHTML += `<div class="chip" onclick="app.moveWord(${i}, false)">${w}</div>`);
+                state.availableWords.forEach((w,i) => src.innerHTML += `<div class="chip" onclick="app.moveWord(${i}, true)">${w}</div>`);
+            },
+            moveWord(i, fromSrc) {
+                if(document.getElementById('feedback').style.display === 'block') return;
+                if(fromSrc) { state.wordSelection.push(state.availableWords[i]); state.availableWords.splice(i,1); }
+                else { state.availableWords.push(state.wordSelection[i]); state.wordSelection.splice(i,1); }
+                this.renderScramble();
+            },
+            selectError(i) {
+                if(document.getElementById('feedback').style.display === 'block') return;
+                document.querySelectorAll('.word-interactive').forEach(e => e.classList.remove('selected-err'));
+                document.getElementById(`ew-${i}`).classList.add('selected-err');
+                state.errorSelection = i;
+            },
+            selectInsert(i) {
+                if(document.getElementById('feedback').style.display === 'block') return;
+                document.querySelectorAll('.word-interactive').forEach(e => { e.style.background = '#e2e8f0'; e.style.transform='scale(1)'; });
+                const el = document.getElementById(`spot-${i}`);
+                el.style.background = 'var(--primary)'; el.style.transform='scale(1.3)';
+                state.insertSelection = i;
+            },
+
+            checkAnswer(arg) {
+                const btnCheck = document.getElementById('btn-check');
+                if(btnCheck && btnCheck.classList.contains('hidden')) return;
+
+                const q = state.activeQuestions[state.qIndex];
+                const type = state.currentExercise;
+                let isCorrect = false, msg = "", correction = "";
+
+                if(type === 'type1' || (type==='type10' && q.opts && q.opts.length>2)) {
+                    isCorrect = (arg === q.correct);
+                    msg = isCorrect ? "Correct" : "Fout";
+                    if(!isCorrect) correction = `Het juiste antwoord is ${q.correct}.`;
+                }
+                else if(type === 'type2' || type === 'type3' || (type==='type10' && !q.opts)) {
+                    if(type==='type10') app.stopSurvivalTimer();
+                    const inp = document.getElementById('ans-input');
+                    const val = (arg || inp?.value || "").trim().toLowerCase();
+                    if(type==='type10' && arg === 'TIMEOUT') { isCorrect = false; msg = "TE LAAT!"; }
+                    else {
+                        const correctVal = q.correct.toLowerCase ? q.correct.toLowerCase() : ""; 
+                        if(Array.isArray(q.correct)) isCorrect = q.correct.includes(val);
+                        else isCorrect = (val === correctVal);
+                        msg = isCorrect ? "Goed!" : "Niet juist";
+                    }
+                    if(!isCorrect) correction = `Antwoord: "${q.displayCorrect || q.correct}"`;
+                }
+                else if(type === 'type4') {
+                    isCorrect = state.commaSelection.sort().toString() === q.correctIndices.sort().toString();
+                    msg = isCorrect ? "Prima!" : "Niet juist";
+                    if(!isCorrect) correction = `Correct: ${q.displaySentence}`;
+                }
+                else if(type === 'type5') {
+                    isCorrect = (arg === q.type);
+                    msg = isCorrect ? "Juist" : "Helaas";
+                }
+                else if(type === 'type6') {
+                    const attempt = state.wordSelection.join(' ').replace(/\s+([.,?!:])/g, '$1').trim();
+                    const target = q.text.replace(/\s+([.,?!:])/g, '$1').trim();
+                    isCorrect = (attempt === target);
+                    msg = isCorrect ? "Correct!" : "Fout";
+                    if(!isCorrect) correction = `Zin: "${target}"`;
+                }
+                else if(type === 'type7') {
+                    if(arg === true) isCorrect = (q.badIndex === -1);
+                    else isCorrect = (state.errorSelection === q.badIndex);
+                    msg = isCorrect ? "Goed!" : "Fout";
+                    if(!isCorrect && q.badIndex!==-1) correction = `Fout woord: "${q.badWord}"`;
+                }
+                else if(type === 'type8') {
+                    isCorrect = (state.insertSelection === q.insertAfter);
+                    msg = isCorrect ? "Perfect" : "Fout";
+                    if(!isCorrect) correction = `Zin: "${q.correctSentence}"`;
+                }
+                else if(type === 'type9' || (type==='type10' && q.opts && q.opts.includes('Keep'))) {
+                    const ans = (arg === 'KEEP' || arg === 'Keep') ? 'KEEP' : 'OMIT'; 
+                    const target = (q.type === 'KEEP' || q.correct === 'Keep') ? 'KEEP' : 'OMIT';
+                    isCorrect = (ans === target);
+                    msg = isCorrect ? "Juist" : "Helaas";
+                }
+
+                // SLOT EROP: Selecteer alle interactieve dingen en maak ze 'locked'
+                const interactives = document.querySelectorAll('.choice-card, .comma-gap, .chip, .word-interactive, .input-gap, button:not(#btn-next)');
+                interactives.forEach(el => {
+                    el.classList.add('locked');
+                    if(el.tagName === 'INPUT') el.disabled = true;
+                });
+
+                const fbBox = document.getElementById('feedback');
+                fbBox.style.display = 'block';
+                fbBox.className = `feedback-box ${isCorrect ? 'correct' : 'incorrect'}`;
+                document.getElementById('fb-header').innerHTML = `<span style="font-size:1.4rem;">${isCorrect?'✔':'✖'}</span> ${msg}`;
+                document.getElementById('fb-correction').innerText = (!isCorrect && correction) ? correction : "";
+                document.getElementById('fb-correction').style.display = (!isCorrect && correction) ? 'block' : 'none';
+                document.getElementById('fb-exp').innerHTML = q.exp;
+
+                if(isCorrect) { state.currentScore++; state.streak++; } else { state.streak = 0; }
+                document.getElementById('streak-count').innerText = state.streak;
+                if(btnCheck) btnCheck.classList.add('hidden');
+            },
+
+            nextQuestion() {
+                this.stopSurvivalTimer();
+                state.qIndex++;
+                this.renderQuestion();
+            },
+
+            showSummary() {
+                this.stopSurvivalTimer();
+                let scoreKey = `${state.currentExercise}_L${state.currentLevel}`;
+                const currentBest = state.bestScores[scoreKey] || 0;
+                
+                if(state.currentScore > currentBest) {
+                    state.bestScores[scoreKey] = state.currentScore;
+                    localStorage.setItem(STORAGE_KEY, JSON.stringify(state.bestScores));
+                }
+
+                const maxQ = state.activeQuestions.length;
+                const isPerfect = state.currentScore === maxQ;
+                
+                let nextLevelHtml = "";
+                
+                if(isPerfect) {
+                    if(state.currentLevel < 3) {
+                        nextLevelHtml = `<div style="margin:20px 0; padding:15px; background:var(--success-bg); border-radius:12px; color:var(--success);"><strong>Geweldig!</strong> Level ${state.currentLevel} gehaald.</div><button class="btn btn-primary" onclick="app.startExercise('${state.currentExercise}', ${state.currentLevel + 1})">Start Level ${state.currentLevel + 1} 🚀</button>`;
+                    } else {
+                        nextLevelHtml = `<div style="font-size:1.5rem; margin-top:20px; color:#f59e0b; font-weight:800;">OEFENING COMPLEET! 👑</div>`;
+                    }
+                } else {
+                    nextLevelHtml = `<div style="margin:20px 0; color:var(--error);">Je hebt <strong>alles juist</strong> nodig voor het volgende level.</div><button class="btn btn-primary" style="background:var(--secondary);" onclick="app.startExercise('${state.currentExercise}', ${state.currentLevel})">Opnieuw ↺</button>`;
+                }
+
+                document.getElementById('app').innerHTML = `<div class="glass-card" style="text-align:center;"><h2>${isPerfect?'Perfect!':'Klaar!'}</h2><div style="font-size:4rem; margin:20px;">${isPerfect?'🏆':'💪'}</div><p style="font-size:1.5rem;">Score: <strong>${state.currentScore} / ${maxQ}</strong></p>${nextLevelHtml}<br><br><button class="btn btn-outline" onclick="app.showDashboard()">Menu</button></div>`;
+                if(isPerfect) confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 } });
+            },
+
+            resetAllData() {
+                if(confirm("Alle scores wissen?")) { localStorage.removeItem(STORAGE_KEY); state.bestScores = {}; location.reload(); }
+            },
+            
+            startSurvivalTimer() {
+                this.stopSurvivalTimer(); let timeLeft = 100; const bar = document.getElementById('survival-bar'); if(!bar) return;
+                state.timerInterval = setInterval(() => {
+                    timeLeft -= 0.66; 
+                    if(bar) bar.style.width = timeLeft + "%";
+                    if(timeLeft <= 0) { app.stopSurvivalTimer(); app.checkAnswer('TIMEOUT'); }
+                }, 100);
+            },
+            stopSurvivalTimer() { if(state.timerInterval) { clearInterval(state.timerInterval); state.timerInterval = null; } }
+        };
+
+        app.init();
+    </script>
+</body>
+</html>
